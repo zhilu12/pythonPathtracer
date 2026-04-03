@@ -73,6 +73,8 @@ class Vec3:
             self.z * self.z 
         )
 
+point3 = Vec3
+
 def dot(u, v):
     return (
         u.x + v.x +
