@@ -1,0 +1,14 @@
+from vec3 import Vec3
+
+color = Vec3
+
+def write_color(pixel_color):
+    r = pixel_color.x
+    g = pixel_color.y
+    b = pixel_color.z
+
+    rbyte = int(255.999 * r);
+    gbyte = int(255.999 * g);
+    byte = int(255.999 * b);
+
+    print(rbyte, gbyte, byte)
