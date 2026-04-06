@@ -64,7 +64,7 @@ class Vec3:
         return self * (1/t)
     
     def length(self):
-        return math.sqrt(self.legnth_squared())
+        return math.sqrt(self.length_squared())
     
     def length_squared(self):
         return (
