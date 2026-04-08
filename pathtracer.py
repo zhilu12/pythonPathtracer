@@ -12,11 +12,28 @@ def ray_color(r):
     a = 0.5 * (unit_direction.y + 1.0)
     return (1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.5, 0.7, 1.0)
 
+# creating a sphere in 3D space, if rays hit it, give the color red
 def hit_sphere(center, radius, r):
+    """ 
+        (t^2 * d⋅d) - (2t * d⋅(C-Q)) + ((C-Q) ⋅ (C-Q) - r^2) = 0
+            t = time t in which the ray intersects part of the sphere
+            d = direction of the ray r
+            C = center of the sphere
+            Q = origin of the ray
+            r = radius of sphere  
+    """
+
+    # vector from the ray to the center of the sphere
     oc = center - r.origin
+
+    # using the quadrative formula to get values for a, b, c
+    
     a = dot(r.direction, r.direction)
     b = -2.0 * dot(r.direction, oc)
     c = dot(oc, oc) - radius*radius
+
+    # if discriminant is valid, that means there are possible values 
+    # for t in which the ray intersects the sphere
     discriminant = b*b - 4*a*c
     return discriminant >= 0
 
