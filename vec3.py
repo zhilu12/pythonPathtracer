@@ -77,9 +77,9 @@ point3 = Vec3
 
 def dot(u, v):
     return (
-        u.x + v.x +
-        u.y + v.y +
-        u.z + v.z
+        u.x * v.x 
+        + u.y * v.y 
+        + u.z * v.z
     )
 
 def cross(u, v):
