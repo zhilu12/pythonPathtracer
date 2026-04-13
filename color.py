@@ -9,6 +9,6 @@ def write_color(pixel_color):
 
     rbyte = int(255.999 * r);
     gbyte = int(255.999 * g);
-    byte = int(255.999 * b);
+    bbyte = int(255.999 * b);
 
-    print(rbyte, gbyte, byte)
+    print(rbyte, gbyte, bbyte)
