@@ -1,8 +1,9 @@
 from tqdm import tqdm
+import math
 from color import color
 from color import write_color
-from ray import *
-from vec3 import *
+from ray import Ray, Vec3, point3
+from vec3 import unit_vector, dot
 
 def ray_color(r):
     t = hit_sphere(point3(0, 0, -1), 0.5, r)
@@ -107,8 +108,6 @@ def main():
             r = Ray(camera_center, ray_direction)
 
             pixel_color = ray_color(r)
-            
-            # color(float(i) / (imgWidth - 1), float(j)/(imgHeight - 1), 0)
 
             write_color(pixel_color)
 
