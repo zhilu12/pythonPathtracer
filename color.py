@@ -1,4 +1,4 @@
-from vec3 import Vec3
+from rtweekend import Vec3
 
 color = Vec3
 

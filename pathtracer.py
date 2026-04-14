@@ -1,56 +1,20 @@
 from tqdm import tqdm
 import math
-from color import color, write_color
-from ray import Ray, Vec3, point3
-from vec3 import unit_vector, dot
 
-def ray_color(r):
-    t = hit_sphere(point3(0, 0, -1), 0.5, r)
-    if t > 0.0:
-        N = unit_vector(r.at(t) - Vec3(0, 0, -1))
-        return 0.5 * color(N.x + 1, N.y + 1, N.z + 1)
-    
-    
-    
+from rtweekend import *
+import rtweekend as rt
+from hittable import hittable, hit_record
+from hittable_list import hittable_list
+from sphere import sphere
+
+def ray_color(r, world):
+    rec = hit_record()
+    if (world.hit(r, 0, rt.infinity, rec)):
+        return 0.5 * (rec.normal + color(1, 1, 1))
+
     unit_direction = unit_vector(r.direction)
-    a = 0.5 * (unit_direction.y + 1.0)
+    a = 0.5*(unit_direction.y + 1.0)
     return (1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.5, 0.7, 1.0)
-
-# creating a sphere in 3D space, if rays hit it, give the color red
-def hit_sphere(center, radius, r):
-    """ 
-        (t^2 * d⋅d) - (2t * d⋅(C-Q)) + ((C-Q) ⋅ (C-Q) - r^2) = 0
-            t = time t in which the ray intersects part of the sphere
-            d = direction of the ray r
-            C = center of the sphere
-            Q = origin of the ray
-            r = radius of sphere  
-    """
-
-    # vector from the ray to the center of the sphere
-    oc = center - r.origin
-
-    # using the quadrative formula to get values for a, b, c
-    a = r.direction.length_squared()
-    b = -2.0 * dot(r.direction, oc)
-    c = oc.length_squared() - radius*radius
-
-
-    # Subbing in b = -2h into the quadratic formula
-    # = (h +- sqrt(h^2 - ac)) / a
-    # and h = d * (C - Q)
-    h = dot(r.direction, oc)
-
-    # if discriminant is valid, that means there are possible values 
-    # for t in which the ray intersects the sphere
-    discriminant = h*h - a*c
-    
-    if discriminant < 0:
-        return -1.0
-    else:
-        return ((h - math.sqrt(discriminant)) / a)
-
-
 
 def main():
 
@@ -62,6 +26,10 @@ def main():
     if imgHeight < 1:
         imgHeight = 1
 
+    world = hittable_list()
+
+    world.add(sphere(point3(0, 0, -1), 0.5))
+    world.add(sphere(point3(0, -100.5, -1), 100))
 
     # Camera
     focalLength = 1.0
@@ -106,7 +74,7 @@ def main():
             ray_direction = pixel_center - camera_center
             r = Ray(camera_center, ray_direction)
 
-            pixel_color = ray_color(r)
+            pixel_color = ray_color(r, world)
 
             write_color(pixel_color)
 

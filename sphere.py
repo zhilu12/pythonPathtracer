@@ -1,12 +1,12 @@
 import math
 from hittable import hittable, hit_record
-from vec3 import dot
-from ray import Ray, Vec3, point3  
+
+from rtweekend import dot, Ray, Vec3, point3
 
 class sphere(hittable):
     def __init__(self, center, radius):
-        center = center
-        radius = max(0.0, radius)
+        self.center = center
+        self.radius = max(0.0, radius)
 
     def hit(self, r: Ray, ray_tmin, ray_tmax, rec: hit_record):
         # vector from the ray to the center of the sphere

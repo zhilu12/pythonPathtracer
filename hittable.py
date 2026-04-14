@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
-from ray import Ray
-from vec3 import dot
+from rtweekend import Ray, dot
 
 class hit_record:
     def __init__(self):

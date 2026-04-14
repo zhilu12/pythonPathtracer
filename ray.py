@@ -1,5 +1,4 @@
-from vec3 import Vec3
-from vec3 import point3
+from rtweekend import Vec3, point3
 
 class Ray:
     def __init__(self, origin, direction):
