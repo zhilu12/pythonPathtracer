@@ -1,6 +1,5 @@
 import math
-from hittable import hittable
-from hittable import hit_record
+from hittable import hittable, hit_record
 from vec3 import dot
 from ray import Ray, Vec3, point3  
 
@@ -32,6 +31,7 @@ class sphere(hittable):
             
         rec.t = root
         rec.p = r.at(rec.t)
-        rec.normal = (rec.p - self.center) / self.radius
+        outward_normal = (rec.p - self.center) / self.radius
+        rec.set_face_normal(r, outward_normal)
 
         return True

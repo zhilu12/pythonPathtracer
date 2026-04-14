@@ -1,7 +1,6 @@
 from tqdm import tqdm
 import math
-from color import color
-from color import write_color
+from color import color, write_color
 from ray import Ray, Vec3, point3
 from vec3 import unit_vector, dot
 
