@@ -1,14 +1,14 @@
 import math
-from hittable import hittable, hit_record
+from hittable import Hittable, Hit_record
 
-from rtweekend import dot, Ray, Vec3, point3
+from rtweekend import dot, Ray, Vec3, point3, Interval
 
-class sphere(hittable):
+class Sphere(Hittable):
     def __init__(self, center, radius):
         self.center = center
         self.radius = max(0.0, radius)
 
-    def hit(self, r: Ray, ray_tmin, ray_tmax, rec: hit_record):
+    def hit(self, r: Ray, ray_t, rec: Hit_record):
         # vector from the ray to the center of the sphere
         oc = self.center - r.origin
 
@@ -24,9 +24,9 @@ class sphere(hittable):
         sqrtd = math.sqrt(discriminant)
 
         root = (h - sqrtd) / a
-        if (root <= ray_tmin or ray_tmax <= root):
+        if (not ray_t.surrounds(root)):
             root = (h + sqrtd) / a
-            if (root <= ray_tmin or ray_tmax <= root):
+            if (not ray_t.surrounds(root)):
                 return False
             
         rec.t = root

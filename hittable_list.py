@@ -1,6 +1,6 @@
-from hittable import hittable, hit_record
+from hittable import Hit_record, Hittable, Interval
 
-class hittable_list(hittable):
+class Hittable_list(Hittable):
     def __init__(self):
         self.objects = []
 
@@ -10,13 +10,13 @@ class hittable_list(hittable):
     def add(self, object):
         self.objects.append(object)
 
-    def hit(self, r, ray_tmin, ray_tmax, rec: hit_record):
-        temp_rec = hit_record()
+    def hit(self, r, ray_t: Interval, rec: Hit_record):
+        temp_rec = Hit_record()
         hit_anything = False
-        closest_so_far = ray_tmax
+        closest_so_far = ray_t.max
 
         for object in self.objects:
-            if object.hit(r, ray_tmin, closest_so_far, temp_rec):
+            if object.hit(r, Interval(ray_t.min, closest_so_far), temp_rec):
                 hit_anything = True
                 closest_so_far = temp_rec.t
                 rec.copy_from(temp_rec)

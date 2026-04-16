@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from rtweekend import Ray, dot
-
-class hit_record:
+from rtweekend import Ray, dot, Interval
+ 
+class Hit_record:
     def __init__(self):
         self.p = None
         self.normal = None
@@ -19,7 +19,7 @@ class hit_record:
         self.t = other.t
         self.front_face = other.front_face    
 
-class hittable: 
+class Hittable: 
     @abstractmethod
-    def hit(self, r, ray_tmin, ray_tmax, rec):
+    def hit(self, r: Ray, ray_t: Interval, rec: Hit_record):
         pass
