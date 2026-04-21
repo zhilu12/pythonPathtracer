@@ -1,5 +1,5 @@
 import math
-from vec3 import Vec3, point3, unit_vector, dot
+from vec3 import Vec3, point3, unit_vector, dot, random_on_hemisphere
 from ray import Ray
 from color import color, write_color
 from interval import Interval

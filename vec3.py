@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 class Vec3:
     def __init__(self, x=0.0, y=0.0, z=0.0):
@@ -74,6 +75,30 @@ class Vec3:
         )
 
 point3 = Vec3
+
+def random(mini=None, maxi=None):
+    if (mini and maxi):
+        return Vec3(random_double(mini, maxi), random_double(mini, maxi), random_double(mini, maxi))
+    return Vec3(random_double(), random_double(), random_double())
+
+def random_unit_vector():
+    while (True):
+        p = random(-1, 1)
+        lensq = p.length_squared()
+        if (1e-160 < lensq and lensq <= 1):
+            return p / math.sqrt(lensq)
+
+def random_on_hemisphere(normal):
+    on_unit_sphere = random_unit_vector()
+    if (dot(on_unit_sphere, normal) > 0.0):
+        return on_unit_sphere
+    else:
+        return -on_unit_sphere
+
+def random_double(min=None, max=None):
+    if (min and max):
+        return np.random.uniform(min, max)
+    return np.random.random()
 
 def dot(u, v):
     return (

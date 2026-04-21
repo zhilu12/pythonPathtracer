@@ -7,6 +7,7 @@ class Camera:
         self.aspect_ratio = 1.0
         self.image_width = 100
         self.samples_per_pixel = 10
+        self.max_depth = 10
 
         self.image_height = None
         self.pixel_samples_scale = None
@@ -27,7 +28,7 @@ class Camera:
                 pixel_color = color(0,0,0)
                 for sample in range(self.samples_per_pixel):
                     r = self.get_ray(i, j)
-                    pixel_color += self.ray_color(r, world)
+                    pixel_color += self.ray_color(r, self.max_depth, world)
 
                 write_color(self.pixel_samples_scale * pixel_color)
 
@@ -70,10 +71,15 @@ class Camera:
                     + 0.5 * (self.pixel_delta_u + self.pixel_delta_v)
                     )
 
-    def ray_color(self, r, world):
+    def ray_color(self, r, depth, world):
+        if depth <= 0:
+            return color(0, 0, 0)
+        
         rec = Hit_record()
+
         if (world.hit(r, Interval(0, infinity), rec)):
-            return 0.5 * (rec.normal + color(1, 1, 1))
+            direction = random_on_hemisphere(rec.normal)
+            return 0.5 * self.ray_color(Ray(rec.p, direction), depth-1, world)
 
         unit_direction = unit_vector(r.direction)
         a = 0.5*(unit_direction.y + 1.0)
