@@ -1,6 +1,7 @@
 from rtweekend import *
 from hittable import Hit_record, Hittable
 from tqdm import tqdm
+from multiprocessing import Pool
 
 class Camera:
     def __init__(self):
@@ -23,14 +24,14 @@ class Camera:
         print(self.image_width, self.image_height)
         print("255")
 
-        for j in tqdm(range(self.image_height)):
-            for i in (range(self.image_width)):
-                pixel_color = color(0,0,0)
-                for sample in range(self.samples_per_pixel):
-                    r = self.get_ray(i, j)
-                    pixel_color += self.ray_color(r, self.max_depth, world)
+        args = [(j, self, world) for j in range(self.image_height)]
 
-                write_color(self.pixel_samples_scale * pixel_color)
+        with Pool() as pool:
+            rows = list(tqdm(pool.imap(render_row, args), total = self.image_height))
+
+        for row in rows:
+            for pixel in row:
+                write_color(pixel)
 
     def initialize(self):
         self.image_height = int(self.image_width/self.aspect_ratio)
@@ -77,9 +78,9 @@ class Camera:
         
         rec = Hit_record()
 
-        if (world.hit(r, Interval(0, infinity), rec)):
-            direction = random_on_hemisphere(rec.normal)
-            return 0.5 * self.ray_color(Ray(rec.p, direction), depth-1, world)
+        if (world.hit(r, Interval(0.001, infinity), rec)):
+            direction = rec.normal + random_unit_vector()
+            return 0.1 * self.ray_color(Ray(rec.p, direction), depth-1, world)
 
         unit_direction = unit_vector(r.direction)
         a = 0.5*(unit_direction.y + 1.0)
@@ -99,3 +100,15 @@ class Camera:
 
     def sample_square(self):
         return Vec3(random_double() - 0.5, random_double() - 0.5, 0)
+    
+def render_row(args):
+        j, camera, world = args
+        row = []
+        for i in range(camera.image_width):
+            pixel_color = color(0,0,0)
+            for sample in range(camera.samples_per_pixel):
+                r = camera.get_ray(i, j)
+                pixel_color += camera.ray_color(r, camera.max_depth, world)
+            row.append(camera.pixel_samples_scale * pixel_color)
+
+        return row
