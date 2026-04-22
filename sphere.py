@@ -1,12 +1,13 @@
 import math
-from hittable import Hittable, Hit_record
+from hittable import Hittable, Hit_record, Material
 
 from rtweekend import dot, Ray, Vec3, point3, Interval
 
 class Sphere(Hittable):
-    def __init__(self, center, radius):
+    def __init__(self, center: point3, radius: float, mat: Material):
         self.center = center
         self.radius = max(0.0, radius)
+        self.mat = mat
 
     def hit(self, r: Ray, ray_t, rec: Hit_record):
         # vector from the ray to the center of the sphere

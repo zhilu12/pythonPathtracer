@@ -80,7 +80,7 @@ class Camera:
 
         if (world.hit(r, Interval(0.001, infinity), rec)):
             direction = rec.normal + random_unit_vector()
-            return 0.1 * self.ray_color(Ray(rec.p, direction), depth-1, world)
+            return 0.7 * self.ray_color(Ray(rec.p, direction), depth-1, world)
 
         unit_direction = unit_vector(r.direction)
         a = 0.5*(unit_direction.y + 1.0)
