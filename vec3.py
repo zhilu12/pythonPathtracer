@@ -73,6 +73,10 @@ class Vec3:
             self.y * self.y +
             self.z * self.z 
         )
+    
+    def near_zero(self):
+        s = 1e-8
+        return (abs(self.e[0]) < s and abs(self.e[1]) < s and abs(self.e[2]) < s)
 
 point3 = Vec3
 
@@ -94,6 +98,9 @@ def random_on_hemisphere(normal):
         return on_unit_sphere
     else:
         return -on_unit_sphere
+
+def reflect(v, n):
+    return v - 2*dot(v, n) * n
 
 def random_double(min=None, max=None):
     if (min and max):

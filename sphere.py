@@ -34,5 +34,6 @@ class Sphere(Hittable):
         rec.p = r.at(rec.t)
         outward_normal = (rec.p - self.center) / self.radius
         rec.set_face_normal(r, outward_normal)
+        rec.mat = self.mat
 
         return True

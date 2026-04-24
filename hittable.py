@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from rtweekend import Ray, dot, Interval, color, random_unit_vector
+from rtweekend import Vec3, Ray, dot, Interval, color, random_unit_vector
  
 class Hit_record:
     def __init__(self):
@@ -31,11 +31,7 @@ class Material(ABC):
     def scatter(self, r_in: Ray, rec: Hit_record, attenuation: color, scattered: Ray):
         pass
 
-class Lambertian(Material):
-
-
-    def scatter(self, r_in: Ray, rec: Hit_record, attenuation: color, scattered: Ray):
-        scatter_direction = rec.normal + random_unit_vector()
-        scattered = Ray(rec.p, scatter_direction)
-        attenuation = albedo
-        return True
+class ScatterRecord:
+    def __init__(self):
+        self.attentuation = None
+        self.scattered = None

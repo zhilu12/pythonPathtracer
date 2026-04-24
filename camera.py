@@ -1,5 +1,5 @@
 from rtweekend import *
-from hittable import Hit_record, Hittable
+from hittable import Hit_record, Hittable, ScatterRecord
 from tqdm import tqdm
 from multiprocessing import Pool
 
@@ -79,8 +79,11 @@ class Camera:
         rec = Hit_record()
 
         if (world.hit(r, Interval(0.001, infinity), rec)):
-            direction = rec.normal + random_unit_vector()
-            return 0.7 * self.ray_color(Ray(rec.p, direction), depth-1, world)
+            srec = ScatterRecord()                              
+            if rec.mat.scatter(r, rec, srec):      
+                return srec.attenuation * self.ray_color(srec.scattered, depth - 1, world)
+            return color(0, 0, 0)
+
 
         unit_direction = unit_vector(r.direction)
         a = 0.5*(unit_direction.y + 1.0)
